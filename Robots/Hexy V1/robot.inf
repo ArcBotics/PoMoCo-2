@@ -1,0 +1,10 @@
+[robot]
+name = Hexy the Hexapod
+controller = Servotor32
+comms = Serial
+version = V1
+mainfile = robot.py
+imagefile = robot.jpg 
+servofile = servos.inf
+joints = joints.inf
+movesfolder = Moves
