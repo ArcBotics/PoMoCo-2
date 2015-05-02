@@ -1,41 +1,34 @@
 # PoMoCo-2
 PoMoCo 2 - Position and Motion Controller
 
-PoMoCo 2.0 runs on modules, and an asynchronous note-passing system between them.
-Each module is a child of the Node class, which itself is a child of the thread class.
-Each module runs as its own thread with its own incoming notes queue. 
-Every node can talk to every other node by putting notes into its incoming queue.
-When a Node starts, it puts a pointer to its own incoming queue into a dictionary shared 
-between the nodes. 
+Running the source:
+https://github.com/ArcBotics/PoMoCo-2/wiki/Running-the-source
 
-Communications between modules
-GUI -> robot: changes to servo positions, offsets, on/off, robot moves
-GUI -> controller: request connection, request auto-connection, record arduino moves
-robot -> controller: changes to servo positions, offsets, on/off
-robot -> GUI: when the robot moves, the servo moves are sent back to the GUI
-controller -> comms: request connection changes, raw message data
-comms -> controller: updates about connection status, firmware version updates, raw message data
-controller -> GUI: updates about connection status, firmware version updates, recorded arduino moves
+How PoMoCo works:
+https://github.com/ArcBotics/PoMoCo-2/wiki/How-PoMoCo-works
 
-Uses Python 2.7, PySerial and wxPython
-
-Installation instructions:
-Windows
-Install Python 2.7
-https://www.python.org/ftp/python/2.7.9/python-2.7.9.msi
-Install pySerial
-https://pypi.python.org/packages/any/p/pyserial/pyserial-2.7.win32.exe
-Instal wxPython
-http://downloads.sourceforge.net/wxpython/wxPython3.0-win32-3.0.2.0-py27.exe
+Roadmap:
+https://github.com/ArcBotics/PoMoCo-2/wiki/Roadmap
 
 
-OSX
--python 2.7 already installed-
-in terminal, run: pip install pyserial
-Then install:
-http://downloads.sourceforge.net/project/wxpython/wxPython/3.0.2.0/wxPython3.0-osx-3.0.2.0-carbon-py2.7.dmg
+The MIT License (MIT)
 
-make sure not to install wxPython Cocoa! Its outdated, and will result in weird glitches when dragging icons
+Copyright (c) 2015 ArcBotics LLC.
 
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-Run the PoMoCo.py file to start
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
