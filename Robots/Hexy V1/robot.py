@@ -6,7 +6,7 @@ import PoMoCoModule
 #smoother means more processing power, and fills the serial line
 #lower if movements start to slow down, or get weird
 #Anything higher than 50 is pointless (maximum refresh of standard servos)
-stepPerS = 5
+stepPerS = 3
 floor = 60
 import sys
 
@@ -227,23 +227,18 @@ class leg():
         runMovement(self.replantFoot_function, endHipAngle, stepTime)
 
     def setHipDeg_function(self, endHipAngle, stepTime):
-        hipMaxDiff = endHipAngle - self.hipServo.GetDeg()
-
-        steps = range(int(stepPerS))
+        startHipAngle = self.hipServo.GetDeg()
+        hipDiff = endHipAngle - startHipAngle
+        self.hip(endHipAngle)
+        
+        steps = range(int(stepPerS*stepTime))
         for i, t in enumerate(steps):
-            # TODO: implement time-movements the servo commands sent for far fewer
-            #       total servo commands
-            hipAngle = (hipMaxDiff / len(steps)) * (i + 1)
-            try:
-                anglNorm = hipAngle * (180 / (hipMaxDiff))
-            except:
-                anglNorm = hipAngle * (180 / (1))
-
-            #self.hip(currentHipAngle+hipAngle)
-            self.hip(self.hipServo.GetDeg() + hipAngle)
-
+            #move a small amount each step
+            hipAngle = (hipDiff / len(steps)) * (i + 1)    
+            self.hip(startHipAngle + hipAngle)
+            
             #wait for next cycle
-            time.sleep(stepTime / float(stepPerS))
+            time.sleep(float(stepTime) / float(stepPerS))
 
     def setFootY_function(self, footY, stepTime):
         # TODO: max steptime dependent
@@ -293,7 +288,7 @@ class leg():
             self.hip(hipAngle)
 
             #wait for next cycle
-            time.sleep(stepTime / float(stepPerS))
+            time.sleep(float(stepTime) / float(stepPerS))
 
 
 if __name__ == '__main__':
