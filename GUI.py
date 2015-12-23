@@ -36,7 +36,7 @@ class RedirectText(object):
 class MainGui(wx.Frame):
     def __init__(self):
         
-        super(MainGui, self).__init__(None, title="PoMoCo 2.0", size=(730, 750))        
+        super(MainGui, self).__init__(None, title="PoMoCo 2.0 - Position and Motion Controller", size=(730, 750))        
         self.initUI()
         #self.LoadRobot(ROBOT_FOLDER_PATH)
         self.Show()
