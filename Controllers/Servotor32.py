@@ -76,27 +76,27 @@ class Servotor32(PoMoCoModule.Node):
 
             rc+= "const PROGMEM uint8_t move_"+name+"_pos[MOVE_"+name.upper()+"_SIZE] = {"+"\n"
             for i,pos in enumerate(poses):
-                rc+= str(int(pos))+" "
+
+                rc+= str(int(pos)/10)+" "
                 if(i < moveSteps-1):
                     rc+= ", "
             rc+=  "};"+"\n\n"
             rc+=  ""+"\n"
             rc+=  "void move_"+name+"(){"+"\n"
-            rc+=  "  startTime = millis_new();"+"\n"
+            rc+=  "  int startTime = hexy.millis_new();"+"\n"
+            rc+=  "  int currentTime = 0;"+"\n"
+            rc+=  "  int last_update = 0;"+"\n"
             rc+=  "  for(int i=0; i<MOVE_"+name.upper()+"_SIZE; i++){" +"\n"
             rc+=  "    delayMicroseconds(10);"+"\n"
-            rc+=  "    currentTime = millis_new() - startTime;"+"\n"
-            rc+=  "    uint16_t move_time = pgm_read_word_near(move_"+name+"_time + i) "+"\n"
+            rc+=  "    currentTime = hexy.millis_new() - startTime;"+"\n"
+            rc+=  "    uint16_t move_time = pgm_read_word_near(move_"+name+"_time + i);"+"\n"
             rc+=  "    while(currentTime < move_time){"+"\n"
             rc+=  "      delayMicroseconds(10);"+"\n"
-            rc+=  "      currentTime = millis_new() - startTime;"+"\n"
-            rc+=  "      if( (last_update - startTime) > 20){"+"\n"
-            rc+=  "        update_registers();"+"\n"
-            rc+=  "      }"+"\n"  
+            rc+=  "      currentTime = hexy.millis_new() - startTime;"+"\n"
             rc+=  "    }"+"\n"
-            rc+=  "    uint8_t servo_time = pgm_read_byte_near(move_"+name+"_servo + i)"
-            rc+=  "    uint8_t servo_pos  = pgm_read_byte_near(move_"+name+"_pos + i)"
-            rc+=  "    changeServo(servo_time, servo_pos*10);"+"\n"
+            rc+=  "    uint8_t servo_time = pgm_read_byte_near(move_"+name+"_servo + i);"+"\n"
+            rc+=  "    uint8_t servo_pos  = pgm_read_byte_near(move_"+name+"_pos + i);"+"\n"
+            rc+=  "    hexy.changeServo(servo_time, servo_pos*10);"+"\n"
             rc+=  "    last_update = currentTime;"+"\n"
             rc+=  "  }"+"\n"
             rc+=  "}"+"\n"
@@ -190,7 +190,10 @@ class Servotor32(PoMoCoModule.Node):
         if self.recording:
             if self.servo_active[num]:
                 self.recording_servo_move_time.append(time.clock())
-                self.recording_servo_move_deg.append(self.servo_pos[num])
+                outPos = self.servo_pos[num]
+                outPos += self.servo_offset[num] #add offset
+                outPos = outPos*(1000.0/90.0)+1500 #convert servo deg to uS pulse length 
+                self.recording_servo_move_deg.append(outPos)
                 self.recording_servo_move_num.append(num)
 
         if self.servo_active[num]:
